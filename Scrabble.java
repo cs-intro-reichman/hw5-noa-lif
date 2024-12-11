@@ -3,7 +3,6 @@
 /*
  * RUNI version of the Scrabble game.
  */
-
 public class Scrabble {
 
     // Note 1: "Class variables", like the five class-level variables declared below,
@@ -65,12 +64,12 @@ public class Scrabble {
         int wordFromAllGivenLettersScore = 50;
         int runiScore = 1000;
         int score = 0;
-		
-		for (int i = 0; i < word.length(); i++) {
-			int charIndexInArray = ((int) word.charAt(i)) - 97;
-			score += SCRABBLE_LETTER_VALUES[charIndexInArray];
-		}
-		score *= word.length();
+
+        for (int i = 0; i < word.length(); i++) {
+            int charIndexInArray = ((int) word.charAt(i)) - 97;
+            score += SCRABBLE_LETTER_VALUES[charIndexInArray];
+        }
+        score *= word.length();
 
         if (word.length() == HAND_SIZE) {
             score += wordFromAllGivenLettersScore;
@@ -111,15 +110,20 @@ public class Scrabble {
             // non-whitespace characters. Whitespace is either space characters, or  
             // end-of-line characters.
             String input = in.readString();
-			if (input.equals(".")){
-				break;
-			}
-			boolean isSubset = MyString.subsetOf(input, hand);
-			boolean isInDictionary = isWordInDictionary(input);
-            if ( isSubset && isInDictionary) {
-                hand = MyString.remove(hand, input);
-                score += wordScore(input);
+            int inputScore = 0;
+            if (input.equals(".")) {
+                break;
             }
+            boolean isSubset = MyString.subsetOf(input, hand);
+            boolean isInDictionary = isWordInDictionary(input);
+            if (isSubset && isInDictionary) {
+                hand = MyString.remove(hand, input);
+                inputScore = wordScore(input);
+				score += inputScore;
+				System.out.println(input + " earned " + inputScore +" points.");
+            } else if (!isSubset || !isInDictionary){
+				System.out.println("Invalid word. Try again.");
+			}
         }
         if (hand.length() == 0) {
             System.out.println("Ran out of letters. Total score: " + score + " points");
@@ -145,20 +149,17 @@ public class Scrabble {
             if (!input.equals("n") && !input.equals("e")) {
                 System.out.println("error");
             }
-			if (input.equals("n"))
-			{
-				String hand = createHand();
-				playHand(hand);
-			}
+            if (input.equals("n")) {
+                String hand = createHand();
+                playHand(hand);
+            }
             break;
         }
     }
 
     public static void main(String[] args) {
 
-    
-
-    //// Uncomment the test you want to run
+        //// Uncomment the test you want to run
 		// testBuildingTheDictionary();
         //testScrabbleScore();
         // testCreateHands();
