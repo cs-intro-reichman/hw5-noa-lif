@@ -3,6 +3,7 @@
 /*
  * RUNI version of the Scrabble game.
  */
+
 public class Scrabble {
 
     // Note 1: "Class variables", like the five class-level variables declared below,
@@ -63,19 +64,22 @@ public class Scrabble {
     public static int wordScore(String word) {
         int wordFromAllGivenLettersScore = 50;
         int runiScore = 1000;
-        int Score = 0;
+        int score = 0;
+		
+		for (int i = 0; i < word.length(); i++) {
+			int charIndexInArray = ((int) word.charAt(i)) - 97;
+			score += SCRABBLE_LETTER_VALUES[charIndexInArray];
+		}
+		score *= word.length();
+
         if (word.length() == HAND_SIZE) {
-            Score = wordFromAllGivenLettersScore;
-        } else if (MyString.subsetOf("runi", word)) {
-            Score = runiScore;
-        } else {
-            for (int i = 0; i < word.length(); i++) {
-                int charIndexInArray = ((int) word.charAt(i)) - 97;
-                Score += SCRABBLE_LETTER_VALUES[charIndexInArray];
-            }
-            Score *= word.length();
+            score += wordFromAllGivenLettersScore;
         }
-        return Score;
+
+        if (MyString.subsetOf("runi", word)) {
+            score += runiScore;
+        }
+        return score;
     }
 
     // Creates a random hand of length (HAND_SIZE - 2) and then inserts
@@ -109,7 +113,7 @@ public class Scrabble {
             String input = in.readString();
             if (MyString.subsetOf(input, hand) && isWordInDictionary(input)) {
                 hand = MyString.remove(hand, input);
-				score +=wordScore(input);
+                score += wordScore(input);
             }
             break;
         }
@@ -134,18 +138,20 @@ public class Scrabble {
             // Gets the user's input, which is all the characters entered by 
             // the user until the user enter the ENTER character.
             String input = in.readString();
-            if (input!="n" || input != "e"){
-				System.out.println("error");
-			}
-			break;
+            if (input != "n" || input != "e") {
+                System.out.println("error");
+            }
+            break;
         }
     }
 
     public static void main(String[] args) {
 
-        //// Uncomment the test you want to run
+    
+
+    //// Uncomment the test you want to run
 		// testBuildingTheDictionary();
-        // testScrabbleScore();
+        testScrabbleScore();
         // testCreateHands();
         // testPlayHands();
         // playGame();
@@ -161,10 +167,12 @@ public class Scrabble {
     }
 
     public static void testScrabbleScore() {
-        System.out.println(wordScore("bee"));
-        System.out.println(wordScore("babe"));
-        System.out.println(wordScore("friendship"));
+        // System.out.println(wordScore("bee"));
+        //System.out.println(wordScore("babe"));
+        //System.out.println(wordScore("friendship"));
         System.out.println(wordScore("running"));
+        System.out.println(wordScore("quiz"));
+
     }
 
     public static void testCreateHands() {
